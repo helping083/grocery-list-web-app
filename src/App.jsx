@@ -1,8 +1,18 @@
 import "./App.css";
-import React from "react";
+import React from "react"
+import { Route, Switch, Redirect } from 'react-router-dom';
+import GroceryListView from "./Screens/GroceryListView";
 
-function App() {
-  return <div className="App">works</div>;
+const App = () => {
+  return (
+    <>
+      <header>header works</header>
+      <Switch>
+        <Route exact path='/' component={GroceryListView} />
+        <Redirect to="/" />
+      </Switch>
+    </>
+  )
 }
 
 export default App;
