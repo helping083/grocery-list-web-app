@@ -2,5 +2,11 @@
   "printWidth": 85,
   "arrowParens": "always",
   "semi": true,
-  "tabWidth": 2
+  "tabWidth": 2,
+  "prettier/prettier": [
+    "error",
+    {
+      "endOfLine": "auto"
+    }
+  ]
 }
