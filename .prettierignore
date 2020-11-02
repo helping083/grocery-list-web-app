@@ -1,0 +1,10 @@
+/build
+/src/assets
+.prettierrc
+package-lock.json
+package.json
+public/index.html
+README.md
+/src/__mocks__
+/coverage
+jest.config.json
