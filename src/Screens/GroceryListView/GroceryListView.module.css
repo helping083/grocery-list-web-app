@@ -1,0 +1,36 @@
+.container {
+  background-color: #e3e3e3;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+  border-radius: 20px;
+}
+
+.active {
+  position: relative;
+}
+
+.active::after {
+  content: '';
+  position: absolute;
+  height: 1px;
+  color: black;
+  width: 100%;
+  top: 50%;
+  left: 0;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  top: 20px;
+}
+
+.pl1 {
+  padding-left: 0.75rem;
+}
+
+.deleteButton {
+  outline: 0;
+  cursor: pointer
+}
