@@ -1,35 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
-import { Button, Row, Col, TextInput, Checkbox } from "react-materialize";
+import { Button, Row, Col, TextInput } from "react-materialize";
+import { useHistory } from "react-router-dom";
+import GroceryList from "../../Components/GroceryList";
 import { STATUS } from "../../Enums/groceryStatus.enum";
-import { FILTER } from "../../Enums/groceryFilter.enum";
+// import { FILTER } from "../../Enums/groceryFilter.enum";
+// import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from "../../Store/constants/fiters";
+import { getVisibleTodos, getFilter } from "../../Store/selectors";
 import { AddGrocery, ToggleStatus, DeleteGrocery } from "../../Store/actions/groceryActions";
 import InputWithOptions from "../../Components/InputWithOptions";
+// import { GMTToLocal } from "../../utils";
 import styles from './GroceryListView.module.css';
-import "materialize-css";
+
+// const FILTER_TITLES = {
+//   [SHOW_ALL] : {
+
+//   },
+//   [SHOW_COMPLETED] : {
+    
+//   },
+//   [SHOW_ACTIVE] : {
+    
+//   }
+// }
 
 const GroceryListView = () => {
   const [grocery, setGrocery] = useState("");
   const [priority, setPriority] = useState(1);
-  const [filteredGroceries, setFilteredGroceries] = useState([]);
-  const [filters, setFilter] = useState([
-    {
-      isFilter: false,
-      name: "ran out",
-      status: FILTER.RAN_OUT
-    },
-    { 
-      isFilter: false,
-      name: "have",
-      status: FILTER.HAVE
-    },
-    {
-      isFilter : true,
-      name: "all",
-      status: FILTER.ALL
-    }
-  ]);
+  const history = useHistory();
 
   const dispatch = useDispatch();
 
@@ -39,10 +38,9 @@ const GroceryListView = () => {
     });
     return sorted;
   });
+  const filter = useSelector(getFilter);
 
-  useEffect(() => {
-    setFilteredGroceries([...groceriesList]);
-  }, [groceriesList])
+  const visible = useSelector(getVisibleTodos(groceriesList, filter));
 
   const addGroceryHandle = () => {
     const data = {
@@ -59,122 +57,62 @@ const GroceryListView = () => {
   const handleToggleChange = (item) => {
     const payload = {
       id: item.id,
-      date: new Date().toGMTString(),
+      date: new Date().toUTCString(),
     }
     dispatch(ToggleStatus(payload));
   };
-  
-  const handleFilter = (status) => {
-    const filtersCopy = [...filters];
-    const index = filters.findIndex((filter) => filter.status === status);
-    filtersCopy[index] = {
-      ...filtersCopy[index],
-      isFilter: !filtersCopy[index].isFilter
-    }
-    setFilter(filtersCopy);
-  };
 
-  const renderGroceriesList = () => (
-    <>
-      {filteredGroceries.map((item) => (
-        <Row 
-          key={item.id}
-          className={styles.pl1}
-        >
-          <Col s={3}>
-            <Checkbox
-              checked={item.status === STATUS.RAN_OUT}
-              filledIn
-              id={item.id}
-              label={item.status}
-              value={item.status}
-              onChange={() => {
-                handleToggleChange(item)
-              }}
-            />
-          </Col>
-          <Col s={3} className={item.status === STATUS.HAVE ? styles.active: ""}>
-            {item.name}
-          </Col>
-          <Col s={3}>
-            {item.toggleStatusChanged}
-          </Col>
-          <Col s={3}>
-            <span 
-              role="button" 
-              tabIndex={0} 
-              onClick={() => dispatch(DeleteGrocery(item.id))}
-              onKeyPress={() => dispatch(DeleteGrocery(item.id))}
-              className={styles.deleteButton}
-            >x
-            </span>
-          </Col>
-        </Row>
-      ))}
-    </>
-  );
+  const handleRedirect = (id) => {
+    history.push(`/details/${id}`)
+  };
 
   return (
     <>
       <Row className={styles.container}>
-        {console.log(groceriesList)}
-        <Row>
-          <Col 
-            s={12} 
-            m={10} 
-            className="offset-m1"
-            style={{
-              marginBottom: "1rem"
-            }}
-          >
-            <Col m={3}>
-              <InputWithOptions
-                multiple={false}
-                text="importance"
-                s={12}
-                isDisabledOption
-                options={["1","2","3","4","5"]}
-                changeHandler={(e) => {setPriority(e.target.value)}}
-              />
-            </Col>
-            <Col m={7}>
-              <TextInput 
-                id="TextInput-4" 
-                placeholder="add"
-                s={12}
-                onChange={(e) => setGrocery(e.target.value)}
-              />
-            </Col>
-            <Col m={2} className={styles.buttonContainer}>
-              <Button
-                node="button"
-                waves="light"
-                onClick={addGroceryHandle}
-                style={{
-                 width: "100%"
+        <Row className={styles.addGroceryContainer}>
+          <Col s={12} m={3}>
+            <InputWithOptions
+              multiple={false}
+              text="importance"
+              s={12}
+              isDisabledOption
+              options={["1","2","3","4","5"]}
+              changeHandler={(e) => {setPriority(e.target.value)}}
+            />
+          </Col>
+          <Col s={12} m={7}>
+            <TextInput 
+              id="TextInput-4" 
+              placeholder="add"
+              s={12}
+              onChange={(e) => setGrocery(e.target.value)}
+            />
+          </Col>
+          <Col s={12} m={2} className={styles.buttonContainer}>
+            <Button
+              node="button"
+              waves="light"
+              onClick={addGroceryHandle}
+              style={{
+                 width: "100%",
+                 top: "30%"
                 }}
-              >
-                add
-              </Button>
-            </Col>
+            >
+              add
+            </Button>
           </Col>
         </Row>
-        <Row className={styles.pl1}>
-          {filters.map((filter) => (
-            <Col s={3} key={filter.status} className={styles.pl1}>
-              <Checkbox
-                checked={filter.isFilter}
-                filledIn
-                id={filter.status}
-                label={filter.name}
-                value={filter.status}
-                onChange={() => handleFilter(filter.status)}
-              />
-            </Col>
-          ))}
+        <Row>
+          radioGroup
+          {filter}
         </Row>
         <Row>
-          {renderGroceriesList()}
+          <GroceryList
+            items={visible}
+            handleToggleChange={handleToggleChange}
+            handleRedirect={handleRedirect}
+            handleDeleteGrocery={(id) => dispatch(DeleteGrocery(id))}
+          />
         </Row>
       </Row>
     </>
