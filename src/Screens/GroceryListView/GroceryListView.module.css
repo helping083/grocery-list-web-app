@@ -12,7 +12,7 @@
 }
 
 .active::after {
-  content: '';
+  content: "";
   position: absolute;
   height: 1px;
   color: black;
@@ -48,4 +48,4 @@
   justify-content: space-around;
   padding-left: 12px;
   margin-bottom: 20px;
-};
+}

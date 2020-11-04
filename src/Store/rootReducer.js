@@ -12,7 +12,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   grocery: groceryStoreReducer,
-  filter: visibilityFilter
+  filter: visibilityFilter,
 });
 
 export default persistReducer(persistConfig, rootReducer);

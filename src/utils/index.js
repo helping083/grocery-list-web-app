@@ -4,4 +4,4 @@ export const GMTToLocal = (gmtString) => {
   // const hours = dt.getHours(); // Will be local time
   // const minutes = dt.getMinutes(); // Will be local time
   // console.log(hours, minutes);
-}
+};

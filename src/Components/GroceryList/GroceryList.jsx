@@ -1,24 +1,22 @@
-import React from 'react';
-import {Row, Col, Checkbox} from "react-materialize";
-import PropTypes from 'prop-types';
+import React from "react";
+import { Row, Col, Checkbox } from "react-materialize";
+import PropTypes from "prop-types";
 import { STATUS } from "../../Enums/groceryStatus.enum";
 import { GMTToLocal } from "../../utils";
 
-const GroceryList = ({items, handleToggleChange, handleRedirect, handleDeleteGrocery}) => {
+const GroceryList = ({
+  items,
+  handleToggleChange,
+  handleRedirect,
+  handleDeleteGrocery,
+}) => {
   return (
     <>
       <Row>
-        <Col 
-          s={3} 
-          className="offset-s3 offset-m4"
-        >
+        <Col s={3} className="offset-s3 offset-m4">
           TASK
         </Col>
-        <Col 
-          s={3}
-        >
-          LAST MODIFIED
-        </Col>
+        <Col s={3}>LAST MODIFIED</Col>
       </Row>
       {items.map((item) => {
         const { id, name, status, toggleStatusChanged } = item;
@@ -32,14 +30,14 @@ const GroceryList = ({items, handleToggleChange, handleRedirect, handleDeleteGro
                 label={status}
                 value={status}
                 onChange={() => {
-                  handleToggleChange(item)
+                  handleToggleChange(item);
                 }}
               />
             </Col>
-            <Col 
+            <Col
               s={3}
               style={{
-                wordBreak: "break-word"
+                wordBreak: "break-word",
               }}
               onClick={() => handleRedirect(item.id)}
             >
@@ -49,32 +47,35 @@ const GroceryList = ({items, handleToggleChange, handleRedirect, handleDeleteGro
               {GMTToLocal(toggleStatusChanged)}
             </Col>
             <Col s={1}>
-              <span 
-                role="button" 
-                tabIndex={0} 
+              <span
+                role="button"
+                tabIndex={0}
                 onClick={() => handleDeleteGrocery(id)}
                 onKeyPress={() => handleDeleteGrocery(id)}
-              >x
+              >
+                x
               </span>
             </Col>
           </Row>
-        )
+        );
       })}
     </>
-  )
-}
+  );
+};
 
 GroceryList.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
-    toggleStatusChanged: PropTypes.string.isRequired,
-    hitoryOfChanges: PropTypes.arrayOf(PropTypes.string).isRequired,
-  })).isRequired,
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      status: PropTypes.string.isRequired,
+      toggleStatusChanged: PropTypes.string.isRequired,
+      hitoryOfChanges: PropTypes.arrayOf(PropTypes.string).isRequired,
+    })
+  ).isRequired,
   handleToggleChange: PropTypes.func.isRequired,
   handleRedirect: PropTypes.func.isRequired,
   handleDeleteGrocery: PropTypes.func.isRequired,
-}
+};
 
 export default GroceryList;

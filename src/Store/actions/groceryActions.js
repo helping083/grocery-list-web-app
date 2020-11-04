@@ -8,9 +8,9 @@ export const AddGrocery = (data) => ({
 export const ToggleStatus = (data) => ({
   type: TOGGLE_GROCERY,
   payload: data,
-})
+});
 
 export const DeleteGrocery = (id) => ({
   type: REMOVE_GROCERY,
   payload: id,
-})
+});

@@ -8,10 +8,10 @@ export const getVisibleTodos = (state, filter) => () => {
     case SHOW_ALL:
       return state;
     case SHOW_COMPLETED:
-      return state.filter(groceri => groceri.status === STATUS.RAN_OUT);
+      return state.filter((groceri) => groceri.status === STATUS.RAN_OUT);
     case SHOW_ACTIVE:
-      return state.filter(groceri => groceri.status === STATUS.HAVE);
+      return state.filter((groceri) => groceri.status === STATUS.HAVE);
     default:
       throw new Error(`Unknown filter: ${filter}`);
   }
-}
+};

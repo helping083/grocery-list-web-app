@@ -1,3 +1,3 @@
-import InputWithOptions from './InputWithOptions';
+import InputWithOptions from "./InputWithOptions";
 
 export default InputWithOptions;

@@ -1,8 +1,14 @@
-import React from 'react'
+import React from "react";
 import PropTypes from "prop-types";
 import { Select } from "react-materialize";
 
-const InputWithOptions = ({options, changeHandler, isDisabledOption, text, ...props}) => {
+const InputWithOptions = ({
+  options,
+  changeHandler,
+  isDisabledOption,
+  text,
+  ...props
+}) => {
   return (
     <Select
       onChange={changeHandler}
@@ -10,29 +16,24 @@ const InputWithOptions = ({options, changeHandler, isDisabledOption, text, ...pr
       {...props}
     >
       {isDisabledOption && (
-        <option
-          disabled
-          value=""
-        >
+        <option disabled value="">
           {text}
         </option>
       )}
-      {
-        options.map((option) => (
-          <option value={option} key={option}>
-            {option}
-          </option>
-        ))
-      }
+      {options.map((option) => (
+        <option value={option} key={option}>
+          {option}
+        </option>
+      ))}
     </Select>
-  )
-}
+  );
+};
 
 InputWithOptions.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   changeHandler: PropTypes.func.isRequired,
   isDisabledOption: PropTypes.bool,
   text: PropTypes.string,
-}
+};
 
-export default InputWithOptions
+export default InputWithOptions;
